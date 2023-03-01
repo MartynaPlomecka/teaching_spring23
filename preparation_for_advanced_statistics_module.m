@@ -1,4 +1,5 @@
 course_path =  '*here add your path';
+
 % list files in directory
 datapath = fullfile(course_path, 'Henson_data/preprocessed_data');
 d = dir(fullfile(datapath, '*sub*')); % equivalent: d = dir([datapath, '/*sub*']);
@@ -23,6 +24,7 @@ for i = 1 : 10
     % load EEG data
     pop_loadset(fullfile(d(i).folder, d(i).name));
     
+    % making the events structure easier -> 3 conditions only
     for e = 1:length(EEG.event)
         if EEG.event(e).type == 5 || EEG.event(e).type == 6 || EEG.event(e).type == 7
             EEG.event(e).type = 1; %familiar faces
@@ -45,9 +47,9 @@ for i = 1 : 10
     end
     
     % epoch data
-    % OUTEEG = pop_epoch( EEG, events, timelimits);
     EEG = pop_epoch(EEG, {1,2,3}, [-0.2 0.8]); %  cutting around faces events
-    % basline correction
+    
+    % baseline correction, 200 - 0  ms before the stimulus
     EEG = pop_rmbase(EEG, [-200 0]);
     
     % save the newly prepared data in this folder
@@ -80,9 +82,9 @@ for i = 1 : 10
     end
     
     col = vertcat(col1,col2);
-    
-    col = col';
-    % Create a new cell array with one column and the same number of rows
+    col = col'; %to have it in the horizontal version
+
+    % Create a new, empty cell array with one column and the same number of rows
     output_cell = cell(length(col), 1);
     
     % Loop over the rows of the input cell array and concatenate the values with "="
