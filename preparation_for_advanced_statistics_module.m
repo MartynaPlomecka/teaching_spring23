@@ -33,6 +33,7 @@ for i = 1 : 10
         end
     end
     
+    % adding 'eventtype' cell to be compatible wih mass_uni toolbox 
     for e = 1:length(EEG.event)
         if EEG.event(e).type == 1
             EEG.event(e).eventtype = 'familiar';
@@ -45,7 +46,7 @@ for i = 1 : 10
     
     % epoch data
     % OUTEEG = pop_epoch( EEG, events, timelimits);
-    EEG = pop_epoch(EEG, {1,2,3}, [-0.2 0.8]); % faces events
+    EEG = pop_epoch(EEG, {1,2,3}, [-0.2 0.8]); %  cutting around faces events
     % basline correction
     EEG = pop_rmbase(EEG, [-200 0]);
     
